@@ -103,16 +103,21 @@ function playMusic() {
 }
 
 function pauseMusic() {
-    audioPlayer.pause();
-    musicBtn.innerText = "▶️";
-    musicBtn.onclick = playMusic;
+    // Pause whichever is playing
+    if (window.currentAudio) {
+        window.currentAudio.pause();
+    } else if (audioPlayer) {
+        audioPlayer.pause();
+    }
+    updateMusicIcon(false);
 }
 
 function toggleMusic() {
-    if (audioPlayer.paused) {
-        playMusic();
-    } else {
+    const player = window.currentAudio || audioPlayer;
+    if (player && !player.paused) {
         pauseMusic();
+    } else {
+        playMusic();
     }
 }
 
