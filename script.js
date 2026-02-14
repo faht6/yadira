@@ -12,13 +12,35 @@ const staticSakuraBg = document.getElementById('static-sakura-bg');
 const smileBtn = document.getElementById('smile-btn');
 const footerEnvelope = document.querySelector('.footer-envelope-container');
 
-// Audio Handling for Mobile
-// Bind directly to the main interaction element to ensure user gesture is captured
-envelope.addEventListener('touchstart', function () {
-    if (audioPlayer.paused) {
-        playMusic();
+// Audio Handling: Robust Unlock Strategy
+// We use 'pointerdown' to capture both touch and mouse events early.
+function unlockAudio() {
+    // Check if audio is playable
+    if (audioPlayer.readyState === 0) {
+        audioPlayer.load();
     }
-}, { passive: true });
+
+    // Attempt silent play-pause to unlock AudioContext
+    // This is the "Magic Fix" for iOS/Android
+    const playPromise = audioPlayer.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            console.log("Audio unlocked successfully");
+
+            // Remove listeners only after success
+            document.removeEventListener('pointerdown', unlockAudio);
+            document.removeEventListener('keydown', unlockAudio);
+        }).catch(error => {
+            console.log("Unlock failed (likely waiting for interaction):", error);
+        });
+    }
+}
+
+// Listen on the entire document for the FIRST interaction
+document.addEventListener('pointerdown', unlockAudio, { once: false }); // keep trying until success
+document.addEventListener('keydown', unlockAudio, { once: false });
 
 // Animation State
 let isOpen = false;
