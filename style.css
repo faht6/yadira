@@ -745,6 +745,59 @@ button,
     }
 }
 
-.hidden {
-    display: none !important;
+/* Start Screen Overlay */
+.start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ffe6eb 0%, #ffc2d1 100%);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    transition: opacity 0.8s ease-out, visibility 0.8s;
+}
+
+.start-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.start-content h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    color: #a4133c;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.start-content p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    color: #590d22;
+    margin-bottom: 40px;
+}
+
+.start-btn {
+    background: #ff4d6d;
+    color: white;
+    border: 3px solid white;
+    padding: 15px 50px;
+    font-size: 1.5rem;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(164, 19, 60, 0.3);
+    transition: transform 0.2s, background 0.2s;
+    animation: pulse 2s infinite;
+}
+
+.start-btn:active {
+    transform: scale(0.95);
 }

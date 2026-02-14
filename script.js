@@ -13,15 +13,24 @@ const smileBtn = document.getElementById('smile-btn');
 const footerEnvelope = document.querySelector('.footer-envelope-container');
 
 // Audio Unlock Strategy
-document.body.addEventListener('click', unlockAudio, { once: true });
-document.body.addEventListener('touchstart', unlockAudio, { once: true });
+// Removed previous passive checks in favor of active start screen
 
-function unlockAudio() {
+function startExperience() {
+    const startScreen = document.getElementById('start-screen');
+
+    // Attempt playback immediately on click
+    audioPlayer.volume = 1.0;
     audioPlayer.play().then(() => {
-        audioPlayer.pause();
-        audioPlayer.currentTime = 0;
-        console.log("Audio unlocked!");
-    }).catch(e => console.log("Unlock failed temporarily", e));
+        musicBtn.innerText = "⏸️";
+        musicBtn.onclick = pauseMusic;
+    }).catch(e => {
+        console.error("Audio playback failed even with active click:", e);
+        // Fallback: show the floating button just in case
+        document.getElementById('enable-music-btn').classList.remove('hidden');
+    });
+
+    // Hide screen
+    startScreen.classList.add('hidden');
 }
 
 // Animation State
@@ -38,8 +47,10 @@ function openEnvelope() {
     // Show Background
     if (staticSakuraBg) staticSakuraBg.classList.add('visible');
 
-    // Try to play music immediately on user interaction
-    playMusic();
+    // Music is already handled by startExperience, but ensure it's playing if user paused it
+    if (audioPlayer.paused) {
+        audioPlayer.play().catch(() => { });
+    }
 
     setTimeout(() => {
         screenEnvelope.style.opacity = '0';
@@ -82,18 +93,8 @@ function typeWriter(text, elementId, speed) {
 }
 
 function playMusic() {
-    audioPlayer.volume = 1.0;
-    audioPlayer.play().then(() => {
-        musicBtn.innerText = "⏸️"; // Pause icon
-        musicBtn.onclick = pauseMusic;
-        // Hide fallback button if it was shown
-        document.getElementById('enable-music-btn').classList.add('hidden');
-    }).catch(error => {
-        console.log("Autoplay prevented:", error);
-        musicBtn.innerText = "▶️"; // Play icon
-        // Show fallback button centrally
-        document.getElementById('enable-music-btn').classList.remove('hidden');
-    });
+    // Legacy function support
+    audioPlayer.play().catch(e => console.log(e));
 }
 
 function forcePlayMusic() {
