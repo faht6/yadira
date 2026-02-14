@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para el amor de mi vida</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️🐢</text></svg>">
+</head>
+
+<body>
+
+    <!-- Background Elements -->
+    <div class="bg-hearts" id="bg-hearts"></div>
+    <div id="static-sakura-bg" class="static-sakura-bg"></div>
+    <div class="sakura-container" id="sakura-container"></div>
+
+    <!-- Screen 1: The Envelope -->
+    <div class="screen-envelope" id="screen-envelope">
+        <div class="envelope-wrapper" onclick="openEnvelope()">
+            <div class="lid one"></div>
+            <div class="lid two"></div>
+            <div class="envelope"></div>
+            <div class="letter">
+                <p>Clic para abrir ❤️</p>
+            </div>
+        </div>
+        <p class="click-instruction">Haz clic en el sobre...</p>
+    </div>
+
+    <!-- Screen 2: Main Content (Hidden initially) -->
+    <div class="screen-content hidden" id="screen-content">
+        <div class="card">
+            <h1 class="title">Para Yadira, el amor de mi vida:</h1>
+            <!-- Message will be typed out by JS -->
+            <p class="message" id="typewriter-message"></p>
+
+            <div class="decorations">
+                <span class="tree">🌳</span> <span class="heart-icon">❤️</span>
+            </div>
+
+            <hr class="divider">
+
+            <div class="timer-section">
+                <p class="timer-title">Mi amor por ti comenzó hace...</p>
+                <div class="timer" id="timer">
+                    <div class="time-box"><span id="years">0</span>
+                        <div class="label">Años</div>
+                    </div>
+                    <div class="time-box"><span id="months">0</span>
+                        <div class="label">Meses</div>
+                    </div>
+                    <div class="time-box"><span id="days">0</span>
+                        <div class="label">Días</div>
+                    </div>
+                    <div class="time-box"><span id="hours">0</span>
+                        <div class="label">Horas</div>
+                    </div>
+                    <div class="time-box"><span id="minutes">0</span>
+                        <div class="label">Min</div>
+                    </div>
+                    <div class="time-box"><span id="seconds">0</span>
+                        <div class="label">Seg</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Music Control -->
+            <button id="music-control" class="music-btn" onclick="toggleMusic()">🎵</button>
+        </div>
+    </div>
+
+    <!-- Floating Smile Button -->
+    <button id="smile-btn" class="smile-btn" onclick="showReason()">¿Necesitas un motivo para sonreír? 💌</button>
+
+    <!-- Reason Modal -->
+    <div id="reason-modal" class="modal hidden" onclick="closeReason()">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <p id="reason-text">Eres mi sol...</p>
+        </div>
+    </div>
+
+    <!-- Footer Envelope (Vale) -->
+    <div class="footer-envelope-container">
+        <div class="mini-envelope" onclick="openMiniEnvelope()">
+            <div class="mini-lid"></div>
+            <div class="mini-body"></div>
+            <div class="mini-heart">❤️</div>
+        </div>
+        <p class="footer-text">Un regalito extra...</p>
+    </div>
+
+    <!-- Cheetos Modal -->
+    <div id="cheetos-modal" class="modal hidden" onclick="closeCheetos()">
+        <div class="modal-content vale-card">
+            <span class="close-btn">&times;</span>
+            <h2>🎟️ VALE OFICIAL 🎟️</h2>
+            <p class="vale-text">Válido por:</p>
+            <h1 class="cheetos-title">UNOS CHEETOS</h1>
+            <p class="vale-subtext">(Y muchos besos 😘)</p>
+            <div class="vale-decoration">🧀🧡👹</div>
+        </div>
+    </div>
+
+    <!-- Local Audio Player -->
+    <audio id="audio-player" loop>
+        <source src="cancion.mp3" type="audio/mp3">
+        Tu navegador no soporta el audio.
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
