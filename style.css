@@ -707,3 +707,24 @@ button,
         font-size: 2rem;
     }
 }
+
+/* Music Fallback Button */
+.enable-music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+    animation: float 3s ease-in-out infinite;
+}
+
+.hidden {
+    display: none !important;
+}
