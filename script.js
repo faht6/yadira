@@ -73,10 +73,19 @@ function playMusic() {
     audioPlayer.play().then(() => {
         musicBtn.innerText = "⏸️"; // Pause icon
         musicBtn.onclick = pauseMusic;
+        // Hide fallback button if it was shown
+        document.getElementById('enable-music-btn').classList.add('hidden');
     }).catch(error => {
         console.log("Autoplay prevented:", error);
         musicBtn.innerText = "▶️"; // Play icon
+        // Show fallback button
+        document.getElementById('enable-music-btn').classList.remove('hidden');
     });
+}
+
+function forcePlayMusic() {
+    playMusic();
+    document.getElementById('enable-music-btn').classList.add('hidden');
 }
 
 function pauseMusic() {

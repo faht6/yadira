@@ -108,8 +108,11 @@
         </div>
     </div>
 
+    <!-- Music Fallback Button -->
+    <button id="enable-music-btn" class="enable-music-btn hidden" onclick="forcePlayMusic()">🎶 Activar Música</button>
+
     <!-- Local Audio Player -->
-    <audio id="audio-player" loop>
+    <audio id="audio-player" loop preload="auto">
         <source src="cancion.mp3" type="audio/mp3">
         Tu navegador no soporta el audio.
     </audio>
