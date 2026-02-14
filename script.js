@@ -79,26 +79,61 @@ function typeWriter(text, elementId, speed) {
     type();
 }
 
+// HYBRID AUDIO STRATEGY
+// Tries to play the DOM element first. If it fails (common in some Android webviews),
+// it creates a new Audio object which sometimes bypasses strict autoplay rules if created
+// inside a user event handler.
 function playMusic() {
-    if (!audioPlayer) return;
+    // Strategy 1: Attempt to play the existing DOM element
+    if (audioPlayer) {
+        audioPlayer.volume = 1.0;
+        audioPlayer.muted = false;
 
-    audioPlayer.volume = 1.0;
-    audioPlayer.muted = false;
+        const playPromise = audioPlayer.play();
 
-    const playPromise = audioPlayer.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log("Audio playing (DOM Element)");
+                updateMusicIcon(true);
+            }).catch(error => {
+                console.warn("DOM play prevented. Trying fallback...", error);
 
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            musicBtn.innerText = "⏸️"; // Pause icon
-            musicBtn.onclick = pauseMusic;
-            // Ensure button is visible if it was hidden
-            if (document.getElementById('enable-music-btn')) {
-                document.getElementById('enable-music-btn').classList.add('hidden');
-            }
-        }).catch(error => {
-            console.log("Autoplay prevented:", error);
-            musicBtn.innerText = "▶️"; // Play icon
-        });
+                // Strategy 2: Create a fresh Audio object (Mobile Fallback)
+                playFallbackAudio();
+            });
+        }
+    } else {
+        playFallbackAudio();
+    }
+}
+
+function playFallbackAudio() {
+    try {
+        const fallbackAudio = new Audio('cancion.mp3');
+        fallbackAudio.volume = 1.0;
+        fallbackAudio.loop = true;
+        fallbackAudio.play().then(() => {
+            console.log("Audio playing (Fallback Object)");
+            // Swap global reference to control it later
+            window.currentAudio = fallbackAudio;
+            updateMusicIcon(true);
+        }).catch(e => console.error("Fallback also failed:", e));
+    } catch (err) {
+        console.error("Critical audio error:", err);
+    }
+}
+
+function updateMusicIcon(isPlaying) {
+    if (isPlaying) {
+        musicBtn.innerText = "⏸️";
+        musicBtn.onclick = pauseMusic;
+        // Hide fallback button if exists
+        if (document.getElementById('enable-music-btn')) {
+            document.getElementById('enable-music-btn').classList.add('hidden');
+        }
+    } else {
+        musicBtn.innerText = "▶️";
+        musicBtn.onclick = playMusic;
     }
 }
 
