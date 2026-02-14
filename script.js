@@ -13,12 +13,28 @@ const smileBtn = document.getElementById('smile-btn');
 const footerEnvelope = document.querySelector('.footer-envelope-container');
 
 // Audio Unlock Strategy
-document.body.addEventListener('touchstart', function () {
+// Audio Unlock Strategy: Silent Play-Pause on First Touch
+function unlockAudio() {
+    // This function is triggered on the very first interaction (tap/click anywhere)
+    // It plays the audio muted for a split second to unlock the AudioContext, then pauses it.
     if (audioPlayer.paused) {
-        audioPlayer.volume = 1.0;
-        // Just warm up the audio context silently
+        audioPlayer.muted = true; // Mute to avoid sound blip
+        audioPlayer.play().then(() => {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            audioPlayer.muted = false; // Unmute for later
+            console.log("Audio Context unlocked silently");
+        }).catch(error => {
+            console.log("Unlock attempt failed:", error);
+        });
     }
-}, { once: true });
+    // Remove listeners once triggers
+    document.body.removeEventListener('touchstart', unlockAudio);
+    document.body.removeEventListener('click', unlockAudio);
+}
+
+document.body.addEventListener('touchstart', unlockAudio, { once: true });
+document.body.addEventListener('click', unlockAudio, { once: true });
 
 // Animation State
 let isOpen = false;
