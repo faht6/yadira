@@ -745,6 +745,61 @@ button,
     }
 }
 
+/* Mobile Adaptations */
+@media (max-width: 600px) {
+    .envelope-wrapper {
+        transform: scale(0.8);
+        /* Scale down envelope for small screens */
+    }
+
+    .title {
+        font-size: 1.8rem;
+        /* Smaller title */
+        padding: 0 10px;
+    }
+
+    .message {
+        font-size: 1rem;
+        /* Readable font size */
+        line-height: 1.5;
+    }
+
+    .timer-title {
+        font-size: 1rem;
+    }
+
+    .timer .time-box {
+        margin: 5px;
+        min-width: 50px;
+    }
+
+    .timer span {
+        font-size: 1.5rem;
+    }
+
+    .smile-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        top: 10px;
+        right: 10px;
+    }
+
+    .footer-envelope-container {
+        bottom: 10px;
+        left: 10px;
+        transform: scale(0.9);
+    }
+
+    /* Ensure nothing overflows */
+    .card {
+        width: 90%;
+        max-width: 90vw;
+        overflow-y: auto;
+        /* Scroll if content is too long */
+        max-height: 80vh;
+    }
+}
+
 .hidden {
     display: none !important;
 }

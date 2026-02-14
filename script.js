@@ -100,14 +100,26 @@ function typeWriter(text, elementId, speed) {
 }
 
 function playMusic() {
+    if (!audioPlayer) return;
+
     audioPlayer.volume = 1.0;
-    audioPlayer.play().then(() => {
-        musicBtn.innerText = "⏸️"; // Pause icon
-        musicBtn.onclick = pauseMusic;
-    }).catch(error => {
-        console.log("Autoplay prevented:", error);
-        musicBtn.innerText = "▶️"; // Play icon
-    });
+    audioPlayer.muted = false;
+
+    const playPromise = audioPlayer.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            musicBtn.innerText = "⏸️"; // Pause icon
+            musicBtn.onclick = pauseMusic;
+            // Ensure button is visible if it was hidden
+            if (document.getElementById('enable-music-btn')) {
+                document.getElementById('enable-music-btn').classList.add('hidden');
+            }
+        }).catch(error => {
+            console.log("Autoplay prevented:", error);
+            musicBtn.innerText = "▶️"; // Play icon
+        });
+    }
 }
 
 function pauseMusic() {
