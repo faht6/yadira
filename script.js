@@ -12,6 +12,18 @@ const staticSakuraBg = document.getElementById('static-sakura-bg');
 const smileBtn = document.getElementById('smile-btn');
 const footerEnvelope = document.querySelector('.footer-envelope-container');
 
+// Audio Unlock Strategy
+document.body.addEventListener('click', unlockAudio, { once: true });
+document.body.addEventListener('touchstart', unlockAudio, { once: true });
+
+function unlockAudio() {
+    audioPlayer.play().then(() => {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        console.log("Audio unlocked!");
+    }).catch(e => console.log("Unlock failed temporarily", e));
+}
+
 // Animation State
 let isOpen = false;
 const messageText = "Si pudiera elegir un lugar seguro, sería a tu lado.";
@@ -70,6 +82,7 @@ function typeWriter(text, elementId, speed) {
 }
 
 function playMusic() {
+    audioPlayer.volume = 1.0;
     audioPlayer.play().then(() => {
         musicBtn.innerText = "⏸️"; // Pause icon
         musicBtn.onclick = pauseMusic;
@@ -78,7 +91,7 @@ function playMusic() {
     }).catch(error => {
         console.log("Autoplay prevented:", error);
         musicBtn.innerText = "▶️"; // Play icon
-        // Show fallback button
+        // Show fallback button centrally
         document.getElementById('enable-music-btn').classList.remove('hidden');
     });
 }
