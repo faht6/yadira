@@ -13,25 +13,12 @@ const smileBtn = document.getElementById('smile-btn');
 const footerEnvelope = document.querySelector('.footer-envelope-container');
 
 // Audio Unlock Strategy
-// Removed previous passive checks in favor of active start screen
-
-function startExperience() {
-    const startScreen = document.getElementById('start-screen');
-
-    // Attempt playback immediately on click
-    audioPlayer.volume = 1.0;
-    audioPlayer.play().then(() => {
-        musicBtn.innerText = "⏸️";
-        musicBtn.onclick = pauseMusic;
-    }).catch(e => {
-        console.error("Audio playback failed even with active click:", e);
-        // Fallback: show the floating button just in case
-        document.getElementById('enable-music-btn').classList.remove('hidden');
-    });
-
-    // Hide screen
-    startScreen.classList.add('hidden');
-}
+document.body.addEventListener('touchstart', function () {
+    if (audioPlayer.paused) {
+        audioPlayer.volume = 1.0;
+        // Just warm up the audio context silently
+    }
+}, { once: true });
 
 // Animation State
 let isOpen = false;
@@ -47,10 +34,8 @@ function openEnvelope() {
     // Show Background
     if (staticSakuraBg) staticSakuraBg.classList.add('visible');
 
-    // Music is already handled by startExperience, but ensure it's playing if user paused it
-    if (audioPlayer.paused) {
-        audioPlayer.play().catch(() => { });
-    }
+    // Play music immediately
+    playMusic();
 
     setTimeout(() => {
         screenEnvelope.style.opacity = '0';
@@ -93,13 +78,14 @@ function typeWriter(text, elementId, speed) {
 }
 
 function playMusic() {
-    // Legacy function support
-    audioPlayer.play().catch(e => console.log(e));
-}
-
-function forcePlayMusic() {
-    playMusic();
-    document.getElementById('enable-music-btn').classList.add('hidden');
+    audioPlayer.volume = 1.0;
+    audioPlayer.play().then(() => {
+        musicBtn.innerText = "⏸️"; // Pause icon
+        musicBtn.onclick = pauseMusic;
+    }).catch(error => {
+        console.log("Autoplay prevented:", error);
+        musicBtn.innerText = "▶️"; // Play icon
+    });
 }
 
 function pauseMusic() {
